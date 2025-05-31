@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>tonny-chat-bot</title>
+    <link rel="stylesheet" href="CHATBOT.css" />
+</head>
+
+<body>
+    <h1>Welcome to Mr.Africa <br />Chat Bot</h1>
+    <p>Your friendly chatbot assistant.</p>
+    <form id="chat-form">
+        <input type="text" id="user-input" placeholder="Whats your Name!" />
+        <button type="submit">Send</button>
+    </form>
+    <div id="chat-log"></div>
+
+    <script>
+        let userName = "";
+        let fakeName = "Ezekiel";
+        let nameSet = false;
+        let chatStarted = false; // NEW: Check if "what?" starts the convo
+
+        document.getElementById('chat-form').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const userInputRaw = document.getElementById('user-input').value.trim();
+            const userInput = userInputRaw.toLowerCase();
+            const chatLog = document.getElementById('chat-log');
+
+            // Display user input
+            chatLog.innerHTML += `<p><strong>${nameSet ? userName : "You"}:</strong> ${userInputRaw}</p>`;
+            document.getElementById('user-input').value = '';
+
+            let botReply = "";
+            let botName = "Bot";
+
+            // 1. Only allow chatbot logic if conversation started with "what?"
+            if (!chatStarted) {
+                if (userInput === "what?" || userInput === "what") {
+                    botReply = "What is your name?";
+                    chatStarted = true;
+                } else {
+                    botReply = "Hello! How can I assist you today?";
+                }
+            } else {
+                // 2. Follow Tonny-style logic after "what?" starts the flow
+                if (!nameSet && userInput !== "" && !userInput.includes("fuck")) {
+                    userName = capitalize(userInputRaw);
+                    nameSet = true;
+                    botReply = `fuck you! ${userName}?`;
+                } else if (userInput.includes("what's your name") || userInput.includes("whats your name") || userInput.includes("what is your name")) {
+                    botReply = `${fakeName}?`;
+                    botName = "Bot";
+                } else if (userInput.includes("fuck you bob")) {
+                    botReply = `fuck you! ${userName || "stranger"}?`;
+                    botName = fakeName;
+                } else if (userInput === "fuck you ezekiel") {
+                    botReply = "Fuck yoooou";
+                    botName = fakeName;
+                } else {
+                    botReply = "Hello! How can I assist you today?";
+                }
+            }
+            if (!chatStarted) {
+                if (userInput === "financial") {
+                    botReply = "If you take a loan from a bank, it will take you 30 years to pay it off.";
+                    chatStarted = true;
+                }else{
+                    botReply = "Hello! How can I assist you today?";
+                }
+            }else{
+                if (userInput === "what can i do" || userInput === "what should i do") {
+                    botReply = "if you Rob the same Bank after 10 years you get released use it wisely";
+                }else if (userInput === "okay") {
+                    botReply = "Okay don't do that i'm joking. Tik tok i'm joking this is joking for free free jokes  free . have  a nice day see you yesterday ";
+                }
+
+            }
+
+            // Display bot reply
+            setTimeout(() => {
+                chatLog.innerHTML += `<p><strong>${botName}:</strong> ${botReply}</p>`;
+                chatLog.scrollTop = chatLog.scrollHeight;
+            }, 500);
+        });
+
+        function capitalize(str) {
+            return str.charAt(0).toUpperCase() + str.slice(1);
+        }
+    </script>
+
+</body>
+
+</html>
